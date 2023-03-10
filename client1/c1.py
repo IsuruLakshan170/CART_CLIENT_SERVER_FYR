@@ -31,7 +31,8 @@ MODELPARAMETERLIST = []
 # genaratedDataPack  = bytes(1024*1024)  # 1 MB
 # genaratedDataPack  = bytes(2*1024*1024)  # 3 MB
 # MODELPARAMETERS = base64.b64encode(genaratedDataPack).decode('utf-8')
-MODELPARAMETERS =encodeParameter.encodeModelParameters()
+MODELPARAMETERS = encodeParameter.encodeModelParameters()
+# MODELPARAMETERS = "Model 1"
 ########################################################################
 
 mySocket = peerCom(HOST, PORT, TIMEOUT)
@@ -80,21 +81,25 @@ if (MODE == conctionType.SEED.value) | (MODE == conctionType.KERNEL.value):
                 elif x.get("Data")[0] == "MODELPARAMETERS":
                     print("MODEL PARAMETERS RECIVED FROM : ",x.get("Sender"))
                     MODELPARAMETERLIST.append(x)
-                    for x in MODELPARAMETERLIST:
-                        if x.get("Data")[0] == "MODELPARAMETERS":
-                            modelparameters = x.get("Data")[1]
-                            encodeParameter.decodeModelParameters(modelparameters)
-                            break
+  
+            # break
         # Do something with the modelparameters variable here
 
                     
                 else:
                     print("UNKNOWN MESSAGE : ",x)
+        
         time.sleep(1)
         timerCal +=1
         if timerCal == TimerOut:
             ModelParamLoop = False
+            
+    for x in MODELPARAMETERLIST:
+        if x.get("Data")[0] == "MODELPARAMETERS":
+            modelparameters = x.get("Data")[1]
+            encodeParameter.decodeModelParameters(modelparameters)
 
+            # print("Results : ",modelparameters)
 ################################################################################
 #-------------------------END----COMMUNICATION SCRIPT--------------------------#
 ################################################################################
