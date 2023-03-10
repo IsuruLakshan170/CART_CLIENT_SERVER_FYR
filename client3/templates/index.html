@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="row">
+            <h3>  Start</h3>
+
+          </div>
+
+          <div class="row">
+            <h1 class="text-primary">Cart</h1>
+          </div>
+
+          <div class="row">
+            <form class = "grid" action="/start" method="POST">
+            <button  type="submit" value="save"   class="btn btn-dark">Start</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-sm">
+
+          <div class="row">
+            <form class = "grid" action="/getItems" method="POST">
+              <button  type="submit" value="save"   class="btn btn-dark">Scan</button>
+              </form>
+          </div>
+
+          <form class = "grid" action="/result" method="POST">
+                  <div class="row">
+                  </div>
+                
+                  <div class="row">
+                 
+                    <div class="col-sm">
+                      <label for="month">Month </label>
+                    </div>
+                    <div class="col-sm">
+                      {{currentDate}} 
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm">
+                    <label for="itemNo">Item NO</label>
+                  </div>
+                  <div class="col-sm">
+                    {{selectItem}} 
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-sm">
+                  <label for="gender">Gender</label>
+                </div>
+                <div class="col-sm">
+                  <select name="gender" id="gender">
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                  </select>
+                </div>
+            </div>
+            <div class="row">
+              <input class="btn btn-primary" type="submit" value="save" >
+
+          </div>
+        </form>
+        </div>
+        <div class="col-sm">
+         
+        </div>
+      </div>
+    </div>
+
+
+    
+
+   
+  </body>
+</html>
