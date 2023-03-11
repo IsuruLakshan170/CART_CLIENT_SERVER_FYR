@@ -11,12 +11,12 @@ import dataSetGenerator as dg
 # model aggregation when cart training after 
 def modelAggregation():
     print("Strat aggregation")
-    parameterArray = [0] * 6
+    parameterArray = [0] * 3
     model=mg.create_model()
     # dg.DatasetGenerator(10000)
 
     x_train_np, y_train_np,x_test_np,y_test_np =sp.splitDataset()
-    for i in range(5):
+    for i in range(2):
         num=i+1
         print("Received Model ------> ",num)
         model.load_weights(f'receivedModelParameter/model_weights_{num}.h5')
@@ -30,9 +30,9 @@ def modelAggregation():
     ma.getModelAccuracy(model,x_test_np,y_test_np)
     receivedModelParameters  = model.get_weights()
     print(type(receivedModelParameters))
-    parameterArray[5]=receivedModelParameters
+    parameterArray[2]=receivedModelParameters
     # averageWeight=[(w1 + w2 + w3 + w4 + w5 + w6 )/6 for w1, w2, w3, w4, w5, w6 in zip(parameterArray[0], parameterArray[1], parameterArray[2], parameterArray[3], parameterArray[4], parameterArray[5])]
-    averageWeight=[(w1 + w2 + w3+ w4 + w5 + w6 )/6 for w1, w2 , w3, w4 , w5 , w6 in zip(parameterArray[0], parameterArray[1],parameterArray[2], parameterArray[3],parameterArray[4], parameterArray[1])]
+    averageWeight=[(w1 + w2 + w3 )/3 for w1, w2 , w3 in zip(parameterArray[0], parameterArray[1],parameterArray[2])]
     modelAG=mg.create_model()
     modelAG.set_weights(averageWeight)
     print("Aggregrated model ------> ")

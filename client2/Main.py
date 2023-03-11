@@ -10,6 +10,7 @@ import modelAccuracy as ma
 import dataSetSplit as sp
 import modelAggregation 
 import fileHandle as fh
+import client
 
 #cart initialisation 
 def initProject():
@@ -31,9 +32,10 @@ def datasetAnalize():
           #clear the csv file
           recodeDataRemove()
           #aggregate the models
+          client.clientConnect()
           modelAggregation.modelAggregation()
           #remove received files
-        #   fh.removeFiles()
+          fh.removeFiles()
           return "Aggregated"
       return ""
   
