@@ -7,16 +7,14 @@ import dataSetSplit as sp
 import pickle
 import os
 
-directory = "receivedModelParameter" #replace with your directory path
-num_files = len([f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))])
-num_files =num_files+1
+
 
 def encodeModelParameters():
     x_train_np, y_train_np,x_test_np,y_test_np =sp.splitDataset()
 
     print("Encoding ----------------> ")
     model = mg.create_model()
-    model.load_weights('modelData/model_weights.h5')
+    model.load_weights('backup/model_weights.h5')
      # Get the size of the saved model weight file
     # model_size_bytes = os.path.getsize('modelData/model_weights.h5')
     # # Convert bytes to MB
@@ -39,7 +37,9 @@ def encodeModelParameters():
     return my_string
 
 def decodeModelParameters(encoded_message):
-    global num_files
+    directory = "receivedModelParameter" #replace with your directory path
+    num_files = len([f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))])
+    num_files =num_files+1
     x_train_np, y_train_np,x_test_np,y_test_np =sp.splitDataset()
 
     print("Decoding ----------------> ")
@@ -54,7 +54,7 @@ def decodeModelParameters(encoded_message):
     model.set_weights(decode_model_weights)
     ma.getModelAccuracy(model,x_test_np,y_test_np)
     model.save_weights(f'receivedModelParameter/model_weights_{num_files}.h5')
-    num_files =num_files+1
+    
     return decode_model_weights
 
 

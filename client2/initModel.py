@@ -6,7 +6,7 @@ import modelAccuracy as ma
 import dataSetSplit as sp
 import modelAggregation 
 import fileHandle as fh
-
+import c2
 
 
 def intModel():
@@ -15,7 +15,8 @@ def intModel():
     # # split data and use for predict accuracy
     # x_train,y_train,x_test,y_test =sp.splitDataset()
     # mt.trainModel(model,x_train,y_train)
+    c2.clientConnect()
     modelAggregation.initialModelAggregation()
-    # fh.removeInitFiles()
+    fh.removeInitFiles()
     # return model
     

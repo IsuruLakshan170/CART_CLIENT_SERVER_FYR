@@ -52,10 +52,10 @@ def getItems():
 
 if __name__ == '__main__':
     # Create two threads: one for running the Flask app, the other for running server connections
-    flask_thread = threading.Thread(target=app.run)
-    train_thread = threading.Thread(target=serverSock.serverConnect)
+    flask_thread = threading.Thread(target=app.run, kwargs={'port': 5003})
+    # train_thread = threading.Thread(target=serverSock.serverConnect)
 
-    QRScanner_thread = threading.Thread(target=QRScanner.QRReader)
+    # QRScanner_thread = threading.Thread(target=QRScanner.QRReader)
     # Start the threads
     # train_thread.start()
     flask_thread.start()
