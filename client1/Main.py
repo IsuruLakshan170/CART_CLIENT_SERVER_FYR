@@ -20,7 +20,7 @@ def initProject():
 def datasetAnalize():
       cartData = pd.read_csv('dataset/cartData.csv')
       if(len(cartData) == 3):
-          print("Strat local training")
+          print("Strat local training ------->")
           model=mg.create_model()
           model.load_weights('modelData/model_weights.h5')
           #traing model using cartdata
@@ -53,7 +53,7 @@ def recodeDataRemove():
         writer.writerows(rows[0:1])
         writer.writerows(rows[4:])
 
-    print("Remove trained  data")
+    print("Removes training data")
     
 
 

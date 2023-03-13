@@ -10,8 +10,9 @@ import client
 
 
 def intModel():
+
     client.clientConnect()
     modelAggregation.initialModelAggregation()
     fh.removeFiles()
-    # return model
+    
     

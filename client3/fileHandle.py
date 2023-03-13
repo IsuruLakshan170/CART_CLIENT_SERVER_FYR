@@ -30,5 +30,5 @@ def removeFiles():
              os.remove(path)
         except FileNotFoundError:
              print("That file does not exist")
-    print("Model parameters are removed from inital model parameter folder the local filesystem")
+    print("Model parameters are removed from receivedModelParameter folder ")
 

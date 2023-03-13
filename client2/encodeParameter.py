@@ -36,13 +36,14 @@ def encodeModelParameters():
     # print("Return encoded parameters as string")
     return my_string
 
+#decode parameters
 def decodeModelParameters(encoded_message):
-    directory = "receivedModelParameter" #replace with your directory path
+    print("Start decoding ----------------> ")
+    directory = "receivedModelParameter" #replace with  directory path
     num_files = len([f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))])
     num_files =num_files+1
     # x_train_np, y_train_np,x_test_np,y_test_np =sp.splitDataset()
 
-    print("Decoding ----------------> ")
     #decode the model
     # print(type(encoded_message))
     my_bytes = encoded_message.encode("utf-8")
@@ -54,7 +55,7 @@ def decodeModelParameters(encoded_message):
     model.set_weights(decode_model_weights)
     # ma.getModelAccuracy(model,x_test_np,y_test_np)
     model.save_weights(f'receivedModelParameter/model_weights_{num_files}.h5')
-    
+    print(f'Decode completed and save Received model parameter {num_files}')
     return decode_model_weights
 
 

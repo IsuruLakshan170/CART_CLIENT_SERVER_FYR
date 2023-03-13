@@ -76,7 +76,6 @@ def clientConnect():
                         print("MODEL REQUEST FROM : ",x.get("Sender"))
                     
                         modelparameters = ["MODELPARAMETERS",MODELPARAMETERS]
-                        # print(MODELPARAMETERS)
                         mySocket.request(requestModel(USERID,modelparameters,x.get("Sender")))
                         print("MODEL PARAMETERS SEND TO : ",x.get("Sender"))
                     elif x.get("Data")[0] == "MODELPARAMETERS":
@@ -98,6 +97,7 @@ def clientConnect():
         for x in MODELPARAMETERLIST:
             if x.get("Data")[0] == "MODELPARAMETERS":
                 modelparameters = x.get("Data")[1]
+                #received parameters decode
                 encodeParameter.decodeModelParameters(modelparameters)
 
                 # print("Results : ",modelparameters)

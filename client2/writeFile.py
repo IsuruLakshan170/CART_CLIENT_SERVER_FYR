@@ -15,4 +15,4 @@ def writetoCSV(firstVal,secondVal,thirdVal):
         # write the new data to the file
         for row in new_data:
             writer.writerow(row)
-    print(firstVal ,secondVal, thirdVal , " Added to csv file")
+    print(firstVal ,secondVal, thirdVal , " added to system")

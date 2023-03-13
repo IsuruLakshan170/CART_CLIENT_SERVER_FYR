@@ -15,17 +15,8 @@ def continuoustrainModel(model,train_data1,train_labels1):
     model.fit(train_data1, train_labels1, epochs=1, batch_size=128, validation_split=0.2, callbacks=[early_stopping])
     #save model data
     sm.saveModelData(model)
+    print("Localy trained and saved model parameters")
     return model
    
 
-# def trainModel(model,train_data1,train_labels1):
-#     # Train the model
-#     early_stopping = EarlyStopping(monitor='val_loss', patience=5)
-
-#     model.fit(train_data1, train_labels1, epochs=1, batch_size=128, validation_split=0.2, callbacks=[early_stopping])
-#     print("Model trained successfully")
-
-#     #save model data
-#     sm.saveModelData(model)
-#     return model
    

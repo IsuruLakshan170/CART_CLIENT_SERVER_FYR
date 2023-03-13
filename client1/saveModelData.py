@@ -23,7 +23,7 @@ def saveModelData(model):
     model_size_mb = model_size_bytes / (1024 * 1024)
 
     print(f"The size of the saved model parameters file is {model_size_mb:.2f} MB.")
-    print("Model Saved")
+    print("Model and parameters Saved ")
     
     
     
