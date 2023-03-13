@@ -11,14 +11,22 @@ selectedItem ="Item 0"
 app = Flask(__name__)
 
 @app.route('/')
-def login():
-    current_date = datetime.date.today()
-    return render_template('index.html',  currentDate=current_date)
+def load():
+    return render_template('home.html')
+
+
+@app.route('/moveHome', methods =['POST',"GET"])
+def moveHome():
+    return render_template('home.html')
+
+@app.route('/moveAdmin', methods =['POST',"GET"])
+def moveAdmin():
+    return render_template('admin.html')
 
 @app.route("/start", methods =['POST',"GET"])
 def start():
     im.initProject()
-    return render_template("index.html")
+    return render_template("admin.html")
 
 @app.route('/getItems', methods =['POST',"GET"])
 def getItems():
@@ -26,7 +34,7 @@ def getItems():
     results = QRScanner.QRReader()
     global selectedItem
     selectedItem = results
-    return render_template('index.html',selectItem=selectedItem,  currentDate=current_date)
+    return render_template('home.html',selectItem=selectedItem,  currentDate=current_date)
 
 @app.route("/result", methods =['POST',"GET"])
 def result():
@@ -50,7 +58,7 @@ def result():
     gender = output["gender"]
     wf.writetoCSV(month, item, gender)
     im.datasetAnalize()
-    return render_template("index.html",currentDate=current_date)
+    return render_template("home.html",currentDate=current_date)
 
 
 if __name__ == '__main__':
