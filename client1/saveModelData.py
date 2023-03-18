@@ -21,7 +21,8 @@ def saveModelData(model):
     model_size_bytes = os.path.getsize('modelData/model_weights.h5')
     # Convert bytes to MB
     model_size_mb = model_size_bytes / (1024 * 1024)
-
+    #Save model as tensorflow 
+    convertToTenserflowModel(model)
     print(f"The size of the saved model parameters file is {model_size_mb:.2f} MB.")
     print("Model and parameters Saved ")
     
