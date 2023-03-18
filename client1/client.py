@@ -5,8 +5,6 @@ from enumList import conctionType
 
 import encodeParameter
 
-
-
 def clientConnect():
     TIMEOUT = 20 ## 12 => 60s
     HOST = 'localhost'
