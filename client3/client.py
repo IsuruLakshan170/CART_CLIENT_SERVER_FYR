@@ -6,12 +6,16 @@ from enumList import conctionType
 from com import communicationProx
 from seed import seedProx
 
+import encodeParameter
+
 HOST = 'localhost'  #'13.250.112.193'
 PORT = 9000
 
 ########################################################################
 #------------------------------PEER   DATA-----------------------------#
-MODELPARAMETERS  = "Model 3"
+# MODELPARAMETERS  = "Model 3"
+MODELPARAMETERS = encodeParameter.encodeModelParameters()
+
 # MODELPARAMETERS  = bytes(1024)  # 1 KB
 # MODELPARAMETERS  = bytes(100*1024)  # 100 KB
 # MODELPARAMETERS  = bytes(1024*1024)  # 1 MB

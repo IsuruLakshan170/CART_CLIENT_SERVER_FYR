@@ -98,7 +98,7 @@ def sigint_handler(signal, frame, mySocket):
     mySocket.close(0)
     sys.exit(0)
 
-def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 15, SYNC_CONST = 1):
+def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 20, SYNC_CONST = 1):
     mySocket = peerCom(HOST, PORT, TIMEOUT , MODE, SYNC_CONST)
     signal.signal(signal.SIGINT, lambda signal, frame: sigint_handler(signal, frame, mySocket))
     USERID = mySocket.connect()
@@ -113,7 +113,7 @@ def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 15, SYNC_CONST = 1):
         for item in MODELPARAMETERLIST:
             if "MODELPARAMETERS" in item['Data']:
                 receivedData = item['Data'][1]
-                print(receivedData)
+                # print(receivedData)
                 # encodeParameter.decodeModelParameters(receivedData)
                 
     if MODE == conctionType.SHELL.value:
