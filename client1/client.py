@@ -119,9 +119,18 @@ def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 20, SYNC_CONST = 1):
     if MODE == conctionType.SHELL.value:
         seedProx(mySocket,USERID,MODE,MOBILEMODELPARAMETERS,MODELPARAMETERS,RECIVER_TIMEOUT)
 
-#Call from Separat thread
-if __name__ == "__main__":
-    mainFunn("KERNEL")
-    time.sleep(2)
-    print("loop call triggered")
 
+def connectNetwork(type):
+    if type == "SHELL":
+        if __name__ == "__main__":
+            mainFunn("SHELL")
+            time.sleep(2)
+            print("loop call triggered")
+  
+    elif type == "KERNEL":
+        if __name__ == "__main__":
+            mainFunn("KERNEL")
+            time.sleep(2)
+            print("loop call triggered")
+
+connectNetwork("KERNEL")
