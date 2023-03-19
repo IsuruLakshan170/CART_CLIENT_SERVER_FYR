@@ -8,7 +8,7 @@ import absl.logging
 absl.logging.set_verbosity(absl.logging.ERROR)
 import dataSetGenerator as dg
 
-# model aggregation when cart training after 
+# model aggregation when cart training after  -- aggregate 3 models----
 def modelAggregation():
     print("Strat aggregation process -------->")
     parameterArray = [0] * 3
@@ -42,7 +42,7 @@ def modelAggregation():
     sm.saveModelData(model)
    
     
-# initial model aggregations
+# initial model aggregations -- aggregate 2 models----
 def initialModelAggregation():
     print("Strat initial received model parameter aggregation ------->")
     # x_train_np, y_train_np,x_test_np,y_test_np =sp.splitDataset()
