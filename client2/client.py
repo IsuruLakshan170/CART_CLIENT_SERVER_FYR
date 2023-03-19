@@ -77,7 +77,7 @@ def backgroudNetworkProcess():
             modelDataSize = len([f for f in os.listdir(directoryModelData) if os.path.isfile(os.path.join(directoryModelData, f))])
             cartData = pd.read_csv('dataset/cartData.csv')
             #if cart is new 
-            if modelDataSize == 1:
+            if modelDataSize == 0:
                  print("Initializing cart")
                  while True:
                     directoryReceivedParameters = "receivedModelParameter" 

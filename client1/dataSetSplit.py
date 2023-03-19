@@ -41,13 +41,15 @@ def splitDataset():
 
 #split recoded dataset
 def splitCartData():
+    sizeOfDataset =3
     #Load  the dataset from the CSV file
     print("READ DATA SET")
     my_data = pd.read_csv('dataset/cartData.csv')
-    train_data =my_data[['Month','Gender']]
-    train_labels =my_data['Item']
+    train_data =my_data[['Month','Gender']].head(sizeOfDataset)
+    train_labels =my_data['Item'].head(sizeOfDataset)
     
     #convert to numpy
+    
     x_train_np = train_data.to_numpy()
     y_train_np = train_labels.to_numpy()
 

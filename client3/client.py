@@ -77,23 +77,20 @@ def backgroudNetworkProcess():
             modelDataSize = len([f for f in os.listdir(directoryModelData) if os.path.isfile(os.path.join(directoryModelData, f))])
             cartData = pd.read_csv('dataset/cartData.csv')
             #if cart is new 
-            print("modelDataSize ",modelDataSize)
-            print("len(cartData) ",len(cartData))
-            if modelDataSize == 1:
+            if modelDataSize == 0:
                  print("Initializing cart")
                  while True:
                     directoryReceivedParameters = "receivedModelParameter" 
                     receivedParametersSize = len([f for f in os.listdir(directoryReceivedParameters) if os.path.isfile(os.path.join(directoryReceivedParameters, f))])
                     #check received parameters size 
                     if receivedParametersSize >= 4:
-                        # Main.initialAggregationProcess()
-                        print("connectNetwork=SHELL 1")
+                        Main.initialAggregationProcess()
                         break
                     else:
-                        # connectNetwork("KERNEL") 
-                        print("connectNetwork=KERNEL 1")
+                        connectNetwork("KERNEL") 
             
-            # compare size of the dataset for globla aggregation
+                
+            #compare size of the dataset for globla aggregation
             elif len(cartData) >= 3:
                 while True:
                     directoryReceivedParameters = "receivedModelParameter" 
@@ -103,11 +100,11 @@ def backgroudNetworkProcess():
                         Main.globleAggregationProcess()
                         break
                     else:
-                        # connectNetwork("KERNEL") 
-                        print("connectNetwork=KERNEL 2")
+                        connectNetwork("KERNEL") 
             
             else:
                 connectNetwork("SHELL")
-                print("connectNetwork=SHELL 2")
+            
             time.sleep(5)  
         
+

@@ -58,4 +58,3 @@ def initialAggregationProcess():
      modelAggregation.initialModelAggregation()
      fh.removeFiles()
 
-globleAggregationProcess()
