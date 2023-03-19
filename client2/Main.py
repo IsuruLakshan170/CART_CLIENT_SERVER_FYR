@@ -10,39 +10,16 @@ import modelAccuracy as ma
 import dataSetSplit as sp
 import modelAggregation 
 import fileHandle as fh
-import client
+import csv
 
-#cart initialisation 
+#cart initialisation remove files that have alredy having
 def initProject():
-    im.intModel()
+    fh.removeFilesFromModelData()
 
-#inserted data analysis
-def datasetAnalize():
-      cartData = pd.read_csv('dataset/cartData.csv')
-      if(len(cartData) == 3):
-          print("Strat local training ------->")
-          model=mg.create_model()
-          model.load_weights('modelData/model_weights.h5')
-          #traing model using cartdata
-          x_train,y_train = sp.splitCartData()
-          mt.continuoustrainModel(model,x_train,y_train)
-          #test model using local data
-          x_train_np, y_train_np,x_test_np,y_test_np =sp.splitDataset()
-          ma.getModelAccuracy(model,x_test_np,y_test_np)
-          #clear the csv file
-          recodeDataRemove()
-          #aggregate the models
-          client.clientConnect()
-          modelAggregation.modelAggregation()
-          #remove received files
-          fh.removeFiles()
-          return "Aggregated"
-      return ""
-  
 
 #remove stored data in carData file
 def recodeDataRemove():
-    import csv
+    
 
     with open('dataset/cartData.csv', 'r') as input_file:
         reader = csv.reader(input_file)
@@ -57,3 +34,27 @@ def recodeDataRemove():
     
 
 
+#Globle aggregation process
+def globleAggregationProcess():
+          print("Strat local training ------->")
+          model=mg.create_model()
+          model.load_weights('modelData/model_weights.h5')
+          #traing model using cartdata
+          x_train,y_train = sp.splitCartData()
+          mt.continuoustrainModel(model,x_train,y_train)
+          #test model using local data
+          x_train_np, y_train_np,x_test_np,y_test_np =sp.splitDataset()
+          ma.getModelAccuracy(model,x_test_np,y_test_np)
+          #clear the csv file
+          recodeDataRemove()
+          #aggregate the models
+          modelAggregation.modelAggregation()
+          #remove received files
+          fh.removeFiles()
+          return "Aggregated"
+
+#initial aggregation process  
+def initialAggregationProcess():
+     modelAggregation.initialModelAggregation()
+     fh.removeFiles()
+    

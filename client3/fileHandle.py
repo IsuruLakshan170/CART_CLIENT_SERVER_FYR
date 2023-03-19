@@ -12,3 +12,25 @@ def removeFiles():
         except FileNotFoundError:
              print("That file does not exist")
     print("Model parameters are removed from receivedModelParameter folder ")
+
+
+def removeFilesFromModelData():
+     #remove model weights
+     path = f'modelData/model_weights.h5'
+     try:
+        os.remove(path)
+     except FileNotFoundError:
+        print("That file does not exist")
+     #remove model
+     path = f'modelData/model.h5'
+     try:
+        os.remove(path)
+     except FileNotFoundError:
+        print("That file does not exist")
+     #remove mobile version model
+     path = f'modelData/model.tflite'
+     try:
+        os.remove(path)
+     except FileNotFoundError:
+        print("That file does not exist")
+     print("All files are removed from Model Data")

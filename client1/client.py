@@ -84,7 +84,7 @@ def backgroudNetworkProcess():
                     receivedParametersSize = len([f for f in os.listdir(directoryReceivedParameters) if os.path.isfile(os.path.join(directoryReceivedParameters, f))])
                     #check received parameters size 
                     if receivedParametersSize >= 4:
-                        Main.globleAggregationProcess()
+                        Main.initialAggregationProcess()
                         break
                     else:
                         connectNetwork("KERNEL") 

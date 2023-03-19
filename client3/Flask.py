@@ -58,7 +58,7 @@ def result():
         item =6
     gender = output["gender"]
     wf.writetoCSV(month, item, gender)
-    im.datasetAnalize()
+    # im.datasetAnalize()
     return render_template("home.html",currentDate=current_date)
 
 def flask_thread():

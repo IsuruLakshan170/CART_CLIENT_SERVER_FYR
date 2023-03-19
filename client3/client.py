@@ -7,6 +7,8 @@ from com import communicationProx
 from seed import seedProx
 import pandas as pd
 import encodeParameter
+import Main 
+import os
 
 HOST = 'localhost'  #'13.250.112.193'
 PORT = 9000
@@ -71,13 +73,41 @@ def connectNetwork(type):
 #----------------------background process --------------------------------
 def backgroudNetworkProcess():
       while True:
+            directoryModelData = "modelData" 
+            modelDataSize = len([f for f in os.listdir(directoryModelData) if os.path.isfile(os.path.join(directoryModelData, f))])
             cartData = pd.read_csv('dataset/cartData.csv')
-            if len(cartData) >= 3:
-                connectNetwork("KERNEL")
+            #if cart is new 
+            print("modelDataSize ",modelDataSize)
+            print("len(cartData) ",len(cartData))
+            if modelDataSize == 1:
+                 print("Initializing cart")
+                 while True:
+                    directoryReceivedParameters = "receivedModelParameter" 
+                    receivedParametersSize = len([f for f in os.listdir(directoryReceivedParameters) if os.path.isfile(os.path.join(directoryReceivedParameters, f))])
+                    #check received parameters size 
+                    if receivedParametersSize >= 4:
+                        # Main.initialAggregationProcess()
+                        print("connectNetwork=SHELL 1")
+                        break
+                    else:
+                        # connectNetwork("KERNEL") 
+                        print("connectNetwork=KERNEL 1")
+            
+            # compare size of the dataset for globla aggregation
+            elif len(cartData) >= 3:
+                while True:
+                    directoryReceivedParameters = "receivedModelParameter" 
+                    receivedParametersSize = len([f for f in os.listdir(directoryReceivedParameters) if os.path.isfile(os.path.join(directoryReceivedParameters, f))])
+                    #check received parameters size 
+                    if receivedParametersSize >= 4:
+                        Main.globleAggregationProcess()
+                        break
+                    else:
+                        # connectNetwork("KERNEL") 
+                        print("connectNetwork=KERNEL 2")
             
             else:
                 connectNetwork("SHELL")
-            
+                print("connectNetwork=SHELL 2")
             time.sleep(5)  
         
-
