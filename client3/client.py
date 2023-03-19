@@ -10,7 +10,7 @@ import encodeParameter
 
 HOST = 'localhost'  #'13.250.112.193'
 PORT = 9000
-
+CURRENT_PROCESS = "HOLD"
 ########################################################################
 #------------------------------PEER   DATA-----------------------------#
 # MODELPARAMETERS  = "Model 3"
@@ -33,7 +33,7 @@ def sigint_handler(signal, frame, mySocket):
     mySocket.close(0)
     sys.exit(0)
 
-def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 300, SYNC_CONST = 1):
+def mainFunn(MODE, RECIVER_TIMEOUT ,TIMEOUT = 12, SYNC_CONST = 1):
     mySocket = peerCom(HOST, PORT, TIMEOUT , MODE, SYNC_CONST)
     signal.signal(signal.SIGINT, lambda signal, frame: sigint_handler(signal, frame, mySocket))
     USERID = mySocket.connect()
@@ -43,20 +43,53 @@ def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 300, SYNC_CONST = 1):
     print("USER ID    : ",USERID)
     if MODE == conctionType.KERNEL.value:
         MODELPARAMETERLIST = communicationProx(mySocket,USERID,MODE,RECIVER_TIMEOUT,MODELPARAMETERS)
+        print("LIST")
+        print("length : ",len(MODELPARAMETERLIST))
+        for item in MODELPARAMETERLIST:
+            if "MODELPARAMETERS" in item['Data']:
+                receivedData = item['Data'][1]
+                # print(receivedData)
+                encodeParameter.decodeModelParameters(receivedData)
+                
     if MODE == conctionType.SHELL.value:
         seedProx(mySocket,USERID,MODE,MOBILEMODELPARAMETERS,MODELPARAMETERS,RECIVER_TIMEOUT)
 
 def connectNetwork(type):
     if type == "SHELL":
         if __name__ == "__main__":
-            mainFunn("SHELL")
+            mainFunn("SHELL",30)
             time.sleep(2)
             print("loop call triggered")
   
     elif type == "KERNEL":
         if __name__ == "__main__":
-            mainFunn("KERNEL")
+            mainFunn("KERNEL",15)
             time.sleep(2)
             print("loop call triggered")
 
-connectNetwork("SHELL")
+
+
+def kernelProcess(type):
+    global CURRENT_PROCESS
+    while True:
+        if CURRENT_PROCESS == "HOLD":
+            CURRENT_PROCESS = "KERNEL"
+            connectNetwork(type)
+            CURRENT_PROCESS ="HOLD"
+            break 
+        else:
+            time.sleep(20)
+               
+def shellProcess(type):
+    global CURRENT_PROCESS
+    while True:
+        if CURRENT_PROCESS == "HOLD":
+            CURRENT_PROCESS = "SHELL"
+            connectNetwork(type)
+            CURRENT_PROCESS ="HOLD"
+            time.sleep(5)
+        else:
+            time.sleep(20)
+
+# kernelProcess("KERNEL")
+shellProcess("SHELL")
