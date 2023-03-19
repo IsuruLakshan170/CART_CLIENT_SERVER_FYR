@@ -1,108 +1,127 @@
+# import signal
+# import sys
+# import time
+# from soc9k import peerCom
+# from enumList import conctionType
+# from com import communicationProx
+# from seed import seedProx
+
+# # import encodeParameter
+
+# HOST = 'localhost'  #'13.250.112.193'
+# PORT = 9000
+
+# ########################################################################
+# #------------------------------PEER   DATA-----------------------------#
+# MODELPARAMETERS  = "jhjhhkhkhkl"
+# # MODELPARAMETERS = encodeParameter.encodeModelParameters()
+
+# # MODELPARAMETERS  = bytes(1024)  # 1 KB
+# # MODELPARAMETERS  = bytes(100*1024)  # 100 KB
+# # MODELPARAMETERS  = bytes(1024*1024)  # 1 MB
+# # MODELPARAMETERS  = bytes(3*1024*1024)  # 3 MB
+# # MODELPARAMETERS  = bytes(5*1024*1024)  # 5 MB
+# ########################################################################
+
+# ########################################################################
+# #------------------------------MOBILE MODEL----------------------------#
+# MOBILEMODELPARAMETERS  = bytes(1024)  # 1 KB
+# ########################################################################
+
+# def sigint_handler(signal, frame, mySocket):
+#     print('Exiting program...')
+#     mySocket.close(0)
+#     sys.exit(0)
+
+# def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 10, SYNC_CONST = 1):
+#     mySocket = peerCom(HOST, PORT, TIMEOUT , MODE, SYNC_CONST)
+#     signal.signal(signal.SIGINT, lambda signal, frame: sigint_handler(signal, frame, mySocket))
+#     USERID = mySocket.connect()
+#     mySocket.start_receiver()
+#     mySocket.start_sender()
+#     print("USER TYPE  : ",MODE)
+#     print("USER ID    : ",USERID)
+#     if MODE == conctionType.KERNEL.value:
+#         MODELPARAMETERLIST = communicationProx(mySocket,USERID,MODE,RECIVER_TIMEOUT,MODELPARAMETERS)
+#         print("LIST")
+#         print("length : ",len(MODELPARAMETERLIST))
+#         for item in MODELPARAMETERLIST:
+#             if "MODELPARAMETERS" in item['Data']:
+#                 receivedData = item['Data'][1]
+#                 print(receivedData)
+#                 # encodeParameter.decodeModelParameters(receivedData)
+                
+#     if MODE == conctionType.SHELL.value:
+#         seedProx(mySocket,USERID,MODE,MOBILEMODELPARAMETERS,MODELPARAMETERS,RECIVER_TIMEOUT)
+
+# #Call from Separat thread
+# if __name__ == "__main__":
+#     mainFunn("KERNEL")
+#     time.sleep(2)
+#     print("loop call triggered")
+
+#----------------------------------------------------------------------------------------------------------
+
+import signal
+import sys
 import time
 from soc9k import peerCom
-from util import requestModel
 from enumList import conctionType
+from com import communicationProx
+from seed import seedProx
+
 
 import encodeParameter
 
-def clientConnect():
-    TIMEOUT = 20 ## 12 => 60s
-    HOST = 'localhost'
-    # HOST = '13.250.112.193'
-    PORT = 9000
-    # MODE = conctionType.SHELL.value
-    MODE = conctionType.KERNEL.value
-    # MODE = conctionType.SEED.value
+HOST = 'localhost'  #'13.250.112.193'
+PORT = 9000
 
-    CLusterIDLoop = True
-    ModelParamLoop = True
-    TimerOut = 10
+########################################################################
+#------------------------------PEER   DATA-----------------------------#
+MODELPARAMETERS  = "Model 1"
+# MODELPARAMETERS = encodeParameter.encodeModelParameters()
 
-    USERID = ""
-    CLUSTERID = ""
-    PEERLIST = []
-    MODELPARAMETERLIST = []
-    ########################################################################
-    #------------------------------SAMPLE DATA-----------------------------#
-    # genaratedDataPack  = bytes(10*1024)  # 10 KB
-    # genaratedDataPack  = bytes(25*1024)  # 25 KB
-    # genaratedDataPack  = bytes(100*1024)  # 100 KB
-    # genaratedDataPack  = bytes(1024*1024)  # 1 MB
-    # genaratedDataPack  = bytes(2*1024*1024)  # 3 MB
-    # MODELPARAMETERS = base64.b64encode(genaratedDataPack).decode('utf-8')
-    MODELPARAMETERS = encodeParameter.encodeModelParameters()
-    # MODELPARAMETERS = "Model 1"
-    ########################################################################
+# MODELPARAMETERS  = bytes(1024)  # 1 KB
+# MODELPARAMETERS  = bytes(100*1024)  # 100 KB
+# MODELPARAMETERS  = bytes(1024*1024)  # 1 MB
+# MODELPARAMETERS  = bytes(3*1024*1024)  # 3 MB
+# MODELPARAMETERS  = bytes(5*1024*1024)  # 5 MB
+########################################################################
 
-    mySocket = peerCom(HOST, PORT, TIMEOUT)
+########################################################################
+#------------------------------MOBILE MODEL----------------------------#
+MOBILEMODELPARAMETERS  = bytes(1024)  # 1 KB
+########################################################################
+
+def sigint_handler(signal, frame, mySocket):
+    print('Exiting program...')
+    mySocket.close(0)
+    sys.exit(0)
+
+def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 15, SYNC_CONST = 1):
+    mySocket = peerCom(HOST, PORT, TIMEOUT , MODE, SYNC_CONST)
+    signal.signal(signal.SIGINT, lambda signal, frame: sigint_handler(signal, frame, mySocket))
     USERID = mySocket.connect()
     mySocket.start_receiver()
     mySocket.start_sender()
     print("USER TYPE  : ",MODE)
     print("USER ID    : ",USERID)
-    ################################################################################
-    #-----------------------BEGIN----COMMUNICATION SCRIPT--------------------------#
-    ################################################################################
-    peerTypeReq = ["PEERTYPE",MODE]#-------------Cluster ID REQUEST-----------------
-    mySocket.request(requestModel(USERID,peerTypeReq))
-
-    while CLusterIDLoop: #----------------------GET Cluster-------------------------
-        tempDataSet = mySocket.RECIVEQUE.copy()
-        if len(tempDataSet) > 0:
-            for x in tempDataSet:
-                tempData = x.get("Data")
-                if (tempData[0] == "CLUSTERID") & (tempData[2] == "PEERLIST"):
-                    mySocket.queueClean(x)
-                    CLUSTERID = tempData[1]
-                    PEERLIST = tempData[3]
-                    print("CLUSTER ID : ",CLUSTERID)
-                    print("PEER LIST  : ",PEERLIST)
-                    CLusterIDLoop = False
-                    break
-    if (MODE == conctionType.SEED.value) | (MODE == conctionType.KERNEL.value):
-        for x in PEERLIST:#----------------------GET Model params-------------------
-            if x != USERID:
-                modelReq = ["MODELREQUEST"]
-                mySocket.request(requestModel(USERID,modelReq,x))
-        timerCal =0
-        while ModelParamLoop:
-            tempDataSet = mySocket.RECIVEQUE.copy()
-            if len(tempDataSet) > 0:
-                for x in tempDataSet:
-                    mySocket.queueClean(x)
-                    if x.get("Data")[0] == "MODELREQUEST":
-                        print("MODEL REQUEST FROM : ",x.get("Sender"))
-                    
-                        modelparameters = ["MODELPARAMETERS",MODELPARAMETERS]
-                        mySocket.request(requestModel(USERID,modelparameters,x.get("Sender")))
-                        print("MODEL PARAMETERS SEND TO : ",x.get("Sender"))
-                    elif x.get("Data")[0] == "MODELPARAMETERS":
-                        print("MODEL PARAMETERS RECIVED FROM : ",x.get("Sender"))
-                        MODELPARAMETERLIST.append(x)
-    
-                # break
-            # Do something with the modelparameters variable here
-
-                        
-                    else:
-                        print("UNKNOWN MESSAGE : ",x)
-            
-            time.sleep(1)
-            timerCal +=1
-            if timerCal == TimerOut:
-                ModelParamLoop = False
+    if MODE == conctionType.KERNEL.value:
+        MODELPARAMETERLIST = communicationProx(mySocket,USERID,MODE,RECIVER_TIMEOUT,MODELPARAMETERS)
+        print("LIST")
+        print("length : ",len(MODELPARAMETERLIST))
+        for item in MODELPARAMETERLIST:
+            if "MODELPARAMETERS" in item['Data']:
+                receivedData = item['Data'][1]
+                print(receivedData)
+                # encodeParameter.decodeModelParameters(receivedData)
                 
-        for x in MODELPARAMETERLIST:
-            if x.get("Data")[0] == "MODELPARAMETERS":
-                modelparameters = x.get("Data")[1]
-                #received parameters decode
-                encodeParameter.decodeModelParameters(modelparameters)
+    if MODE == conctionType.SHELL.value:
+        seedProx(mySocket,USERID,MODE,MOBILEMODELPARAMETERS,MODELPARAMETERS,RECIVER_TIMEOUT)
 
-                # print("Results : ",modelparameters)
-    ################################################################################
-    #-------------------------END----COMMUNICATION SCRIPT--------------------------#
-    ################################################################################
-    time.sleep(5)
-    mySocket.close()
-
+#Call from Separat thread
+if __name__ == "__main__":
+    mainFunn("KERNEL")
+    time.sleep(2)
+    print("loop call triggered")
 

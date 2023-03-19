@@ -1,6 +1,3 @@
-import sys
-import pickle
-
 def partDevider(sock, serialized_data):
     MAX_CHUNK_SIZE = 1024
     chunks = [serialized_data[i:i+MAX_CHUNK_SIZE] for i in range(0, len(serialized_data), MAX_CHUNK_SIZE)]

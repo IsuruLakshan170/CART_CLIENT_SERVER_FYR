@@ -6,8 +6,9 @@ import os
 import zlib
 import numpy as np
 import io
+import sys
 
-
+#encode for cart 
 def encodeModelParameters():
    
     print("Encoding ----------------> ")
@@ -33,7 +34,7 @@ def encodeModelParameters():
     # print("Return encoded parameters as string")
     return compressed_model
 
-#decode parameters
+#decode for cart
 def decodeModelParameters(encoded_message):
     print("Start decoding ----------------> ")
     directory = "receivedModelParameter" #replace with  directory path
@@ -54,3 +55,22 @@ def decodeModelParameters(encoded_message):
     model.save_weights(f'receivedModelParameter/model_weights_{num_files}.h5')
     print(f'Decode completed and save Received model parameter {num_files}')
     return model_weights
+
+#-----------------------------------------------------------------------------------------------------------
+
+#encode for mobile  
+def encodeModelParametersForMobile():
+    
+    print("Mobile version Model Loading & converto byte Stream ----------------> ")
+    
+    # Read the binary data of the model file
+    with open("modelData/model.tflite", "rb") as f:
+        tflite_model_bytes = f.read()
+
+    # Encode the model as bytes
+    tflite_model_byte_stream = bytes(tflite_model_bytes)
+    print(type(tflite_model_byte_stream))
+    size_in_mb = sys.getsizeof(tflite_model_byte_stream) / (1024 * 1024)
+    print(f"Size of tflite model byte stream: {size_in_mb} MB")
+    return tflite_model_byte_stream
+

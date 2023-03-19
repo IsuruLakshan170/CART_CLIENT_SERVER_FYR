@@ -1,23 +1,4 @@
-import requests
 import os
-
-#download files from internet
-def downloadFile(url,filename):
-    try:
-        with requests.get(url) as req:
-            with open(filename,'wb') as f:
-                for chunk in req.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
-            return filename
-    except Exception as e:
-        print(e)
-        return None
-
-
-downloadLink = 'https://thumbs.dreamstime.com/z/close-up-inside-okra-flowe-45588243.jpg'
-# downloadFile(downloadLink,'downloads/testImage.jpg')
-
 
 #remove the file from the initModelParameters
 def removeFiles():
@@ -31,4 +12,3 @@ def removeFiles():
         except FileNotFoundError:
              print("That file does not exist")
     print("Model parameters are removed from receivedModelParameter folder ")
-

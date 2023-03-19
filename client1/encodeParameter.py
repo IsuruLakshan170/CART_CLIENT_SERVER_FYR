@@ -74,4 +74,3 @@ def encodeModelParametersForMobile():
     print(f"Size of tflite model byte stream: {size_in_mb} MB")
     return tflite_model_byte_stream
 
-encodeModelParametersForMobile()

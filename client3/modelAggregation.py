@@ -59,8 +59,7 @@ def initialModelAggregation():
     # print("Received model 2 accuracy ")
     # ma.getModelAccuracy(model2,x_test_np,y_test_np)
     weight_2  = model2.get_weights()
-    
-    
+
     averageWeight=[(w1 + w2 )/2 for w1, w2 in zip(weight_1, weight_2 )]
 
     modelAG=mg.create_model()
