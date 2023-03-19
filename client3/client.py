@@ -70,7 +70,6 @@ def connectNetwork(type):
 
 #----------------------background process --------------------------------
 def backgroudNetworkProcess():
-    # if __name__ == '__main__':
       while True:
             cartData = pd.read_csv('dataset/cartData.csv')
             if len(cartData) >= 3:

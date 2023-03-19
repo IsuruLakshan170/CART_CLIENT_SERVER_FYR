@@ -65,16 +65,6 @@ def flask_thread():
     app.run()
 
 if __name__ == '__main__':
-    t = Thread(target=flask_thread)
+    t = Thread(target=app.run, kwargs={'port': 5003})
     t.start()
     client.backgroudNetworkProcess()
-    
-    # Create  threads: one for running the Flask app
-    # flask_thread = threading.Thread(target=app.run, kwargs={'port': 5001})
-    # backgroudNetworkProcess_thread = threading.Thread(target=client.backgroudNetworkProcess)
-    
-    # flask_thread.start()
-    # backgroudNetworkProcess_thread.start()
-    
-    # flask_thread.join()
-    # backgroudNetworkProcess_thread.join()

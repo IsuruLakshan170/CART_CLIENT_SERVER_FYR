@@ -6,7 +6,6 @@ from enumList import conctionType
 from com import communicationProx
 from seed import seedProx
 import pandas as pd
-
 import encodeParameter
 
 HOST = 'localhost'  #'13.250.112.193'
@@ -55,7 +54,8 @@ def mainFunn(MODE, RECIVER_TIMEOUT ,TIMEOUT = 12, SYNC_CONST = 1):
     if MODE == conctionType.SHELL.value:
         seedProx(mySocket,USERID,MODE,MOBILEMODELPARAMETERS,MODELPARAMETERS,RECIVER_TIMEOUT)
 
-   
+
+       
 def connectNetwork(type):
     if type == "SHELL":
             mainFunn("SHELL",50)
@@ -80,6 +80,4 @@ def backgroudNetworkProcess():
             
             time.sleep(5)  
         
-if __name__ == '__main__':
-    backgroudNetworkProcess()
-        
+
