@@ -78,8 +78,8 @@ PORT = 9000
 
 ########################################################################
 #------------------------------PEER   DATA-----------------------------#
-MODELPARAMETERS  = "Model 1"
-# MODELPARAMETERS = encodeParameter.encodeModelParameters()
+# MODELPARAMETERS  = "Model 1"
+MODELPARAMETERS = encodeParameter.encodeModelParameters()
 
 # MODELPARAMETERS  = bytes(1024)  # 1 KB
 # MODELPARAMETERS  = bytes(100*1024)  # 100 KB
@@ -114,7 +114,7 @@ def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 20, SYNC_CONST = 1):
             if "MODELPARAMETERS" in item['Data']:
                 receivedData = item['Data'][1]
                 # print(receivedData)
-                # encodeParameter.decodeModelParameters(receivedData)
+                encodeParameter.decodeModelParameters(receivedData)
                 
     if MODE == conctionType.SHELL.value:
         seedProx(mySocket,USERID,MODE,MOBILEMODELPARAMETERS,MODELPARAMETERS,RECIVER_TIMEOUT)
