@@ -5,7 +5,7 @@ from soc9k import peerCom
 from enumList import conctionType
 from com import communicationProx
 from seed import seedProx
-
+import pandas as pd
 import encodeParameter
 
 HOST = 'localhost'  #'13.250.112.193'
@@ -13,7 +13,7 @@ PORT = 9000
 CURRENT_PROCESS = "HOLD"
 ########################################################################
 #------------------------------PEER   DATA-----------------------------#
-# MODELPARAMETERS  = "Model 3"
+# MODELPARAMETERS  = "Model 2"
 MODELPARAMETERS = encodeParameter.encodeModelParameters()
 
 # MODELPARAMETERS  = bytes(1024)  # 1 KB
@@ -54,42 +54,31 @@ def mainFunn(MODE, RECIVER_TIMEOUT ,TIMEOUT = 12, SYNC_CONST = 1):
     if MODE == conctionType.SHELL.value:
         seedProx(mySocket,USERID,MODE,MOBILEMODELPARAMETERS,MODELPARAMETERS,RECIVER_TIMEOUT)
 
+
+       
 def connectNetwork(type):
     if type == "SHELL":
-        if __name__ == "__main__":
-            mainFunn("SHELL",30)
+            mainFunn("SHELL",50)
             time.sleep(2)
             print("loop call triggered")
   
     elif type == "KERNEL":
-        if __name__ == "__main__":
             mainFunn("KERNEL",15)
             time.sleep(2)
             print("loop call triggered")
 
 
+#----------------------background process --------------------------------
+def backgroudNetworkProcess():
+    # if __name__ == '__main__':
+      while True:
+            cartData = pd.read_csv('dataset/cartData.csv')
+            if len(cartData) >= 3:
+                connectNetwork("KERNEL")
+            
+            else:
+                connectNetwork("SHELL")
+            
+            time.sleep(5)  
+        
 
-def kernelProcess(type):
-    global CURRENT_PROCESS
-    while True:
-        if CURRENT_PROCESS == "HOLD":
-            CURRENT_PROCESS = "KERNEL"
-            connectNetwork(type)
-            CURRENT_PROCESS ="HOLD"
-            break 
-        else:
-            time.sleep(20)
-               
-def shellProcess(type):
-    global CURRENT_PROCESS
-    while True:
-        if CURRENT_PROCESS == "HOLD":
-            CURRENT_PROCESS = "SHELL"
-            connectNetwork(type)
-            CURRENT_PROCESS ="HOLD"
-            time.sleep(5)
-        else:
-            time.sleep(20)
-
-# kernelProcess("KERNEL")
-shellProcess("SHELL")

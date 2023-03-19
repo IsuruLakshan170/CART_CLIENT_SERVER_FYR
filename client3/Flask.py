@@ -1,10 +1,11 @@
 #Flask for ui handing and request handling
 from flask import Flask, render_template, request
-import threading
+from threading import Thread
 import Main as im
 import writeFile as wf
 import QRScanner
 import datetime
+import client 
 
 selectedItem ="Item 0"
 
@@ -60,12 +61,20 @@ def result():
     im.datasetAnalize()
     return render_template("home.html",currentDate=current_date)
 
+def flask_thread():
+    app.run()
 
 if __name__ == '__main__':
+    t = Thread(target=flask_thread)
+    t.start()
+    client.backgroudNetworkProcess()
+    
     # Create  threads: one for running the Flask app
-    flask_thread = threading.Thread(target=app.run, kwargs={'port': 5001})
-    flask_thread.start()
-    flask_thread.join()
-   
-
-
+    # flask_thread = threading.Thread(target=app.run, kwargs={'port': 5001})
+    # backgroudNetworkProcess_thread = threading.Thread(target=client.backgroudNetworkProcess)
+    
+    # flask_thread.start()
+    # backgroudNetworkProcess_thread.start()
+    
+    # flask_thread.join()
+    # backgroudNetworkProcess_thread.join()

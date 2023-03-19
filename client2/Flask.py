@@ -5,6 +5,7 @@ import Main as im
 import writeFile as wf
 import QRScanner
 import datetime
+import client 
 
 selectedItem ="Item 0"
 
@@ -63,7 +64,7 @@ def result():
 
 if __name__ == '__main__':
     # Create  threads: one for running the Flask app
-    flask_thread = threading.Thread(target=app.run, kwargs={'port': 5001})
+    flask_thread = threading.Thread(target=app.run, kwargs={'port': 5002})
     flask_thread.start()
     flask_thread.join()
    
