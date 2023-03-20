@@ -4,14 +4,17 @@ import struct
 import sys
 from rndGen import generateId
 
-HOST = ''          # The server's hostname or IP address
-PORT = 9000        # The port used by the server
+HOST = ''
+PORT = 9000
+MOBILE_PORT = 8000
 
 DeviceTable = []
 ClusterTable = {}
 clusterSize = 2
 SYNC_CONST = 1
 
+shared_data = {}
+MOBILEDATARECORDER = {}
 DATARECORDER = {}
 
 def responceModel(msgTo, data, msgFrom="SERVER"):
@@ -49,6 +52,14 @@ def reqirementHandler(data,writer,addr):
         elif req[1] == "SHELL":
             DeviceTable.append(User)
             print(User, " : ",req[1])
+    elif req[0] == "EXIT":
+        if User in DeviceTable:
+            DeviceTable.remove(User)
+        dataAuth = ["EXITDONE"]
+        tempData = responceModel(User,dataAuth)
+        mailBox = DATARECORDER.get(User)
+        mailBox.append(tempData)
+        print(User, " : ",req[0])
 
 def requestHandler(data):
     User = data.get("Receiver")
@@ -60,8 +71,9 @@ def requestHandler(data):
         mailBox = DATARECORDER.get(User)
         mailBox.append(data)
 
-# This is the coroutine that will handle incoming client connections
+# This is the coroutine that will handle incoming cart connections
 async def handle_client(reader, writer):
+    global shared_data
     print('----------------------------------------------------------------')
     addr = writer.get_extra_info('peername')
     print('Connected by', addr)
@@ -119,18 +131,38 @@ async def handle_client(reader, writer):
     writer.close()
     print('Connection Closed : ',addr)
 
+# This is the coroutine that will handle incoming mobile app connections
+async def handle_mobile(reader, writer):
+    global shared_data
+    print('*****************************************************************')
+    addr = writer.get_extra_info('peername')
+    print('Connected by', addr)
+    ##################USER_ID####################################
+    userId = generateId(16)
+    DATARECORDER[userId] = []
+    print('Mobile User id : ', userId)
+    writer.write(userId.encode())
+    await writer.drain()
+    ######################RUNNER_ENGINE##########################
+    
+    
+    #############################################################
+    writer.close()
+    print('Mobile Connection Closed : ',addr)
+
 # This is the main route that starts the server on here
 async def main():
     # start the server and bind it to the specified host and port
     server = await asyncio.start_server(handle_client, HOST, PORT)
+    mobile_server = await asyncio.start_server(handle_mobile, HOST, MOBILE_PORT)
     # print a message to indicate that the server is running
-    print("Server listening on port", PORT)
+    print(f"Server listening on {HOST}:{PORT}")
+    print(f"Mobile server listening on {HOST}:{MOBILE_PORT}")
 
     async with server:
-        # start serving incoming connections forever
-        await server.serve_forever()
-    server.close()
-    await server.wait_closed()
+        async with mobile_server:
+            await asyncio.gather(server.serve_forever(), mobile_server.serve_forever())
+
 
 if __name__ == "__main__":
     try:
