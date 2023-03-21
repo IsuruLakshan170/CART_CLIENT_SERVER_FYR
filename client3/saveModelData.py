@@ -6,8 +6,10 @@ from tensorflow import keras
 def saveModelData(model):
     #save model
     model.save('modelData/model.h5')
+    model.save('backup/model.h5')
     #save model parameters
     model.save_weights('modelData/model_weights.h5')
+    model.save_weights('backup/model_weights.h5')
     #convert and save model into tensorflow type
     convertToTenserflowModel(model)
     # Get the size of the saved model file
@@ -36,11 +38,4 @@ def convertToTenserflowModel(model):
 
     # Save the TensorFlow Lite model to disk
     open("modelData/model.tflite","wb").write(tflite_model)
-    
-
-# # Get the size of the saved model weight file
-# model_size_bytes = os.path.getsize('modelData/model_weights.h5')
-# # Convert bytes to MB
-# model_size_mb = model_size_bytes / (1024 * 1024)
-
-# print(f"The size of the saved model parameters file is {model_size_mb:.2f} MB.")
+    open("backup/model.tflite","wb").write(tflite_model)

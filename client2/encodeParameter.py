@@ -13,7 +13,7 @@ def encodeModelParameters():
    
     print("Encoding ----------------> ")
     model = mg.create_model()
-    model.load_weights('backup/model_weights.h5')
+    model.load_weights('modelData/model_weights.h5')
 
     model_weights = model.get_weights()
 

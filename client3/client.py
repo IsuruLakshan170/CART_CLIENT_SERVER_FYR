@@ -12,7 +12,6 @@ import os
 
 HOST = 'localhost'  #'13.250.112.193'
 PORT = 9000
-CURRENT_PROCESS = "HOLD"
 ########################################################################
 #------------------------------PEER   DATA-----------------------------#
 # MODELPARAMETERS  = "Model 2"
@@ -73,7 +72,7 @@ def connectNetwork(type):
 #----------------------background process --------------------------------
 def backgroudNetworkProcess():
       while True:
-            directoryModelData = "modelData" 
+            directoryModelData = "backup" 
             modelDataSize = len([f for f in os.listdir(directoryModelData) if os.path.isfile(os.path.join(directoryModelData, f))])
             cartData = pd.read_csv('dataset/cartData.csv')
             #if cart is new 
@@ -92,6 +91,7 @@ def backgroudNetworkProcess():
                 
             #compare size of the dataset for globla aggregation
             elif len(cartData) >= 3:
+                print("Connecting as KERNEL for globla aggregation")
                 while True:
                     directoryReceivedParameters = "receivedModelParameter" 
                     receivedParametersSize = len([f for f in os.listdir(directoryReceivedParameters) if os.path.isfile(os.path.join(directoryReceivedParameters, f))])
@@ -103,6 +103,7 @@ def backgroudNetworkProcess():
                         connectNetwork("KERNEL") 
             
             else:
+                print("Connecting as SHELL for send Models")
                 connectNetwork("SHELL")
             
             time.sleep(5)  

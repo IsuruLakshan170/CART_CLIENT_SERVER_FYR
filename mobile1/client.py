@@ -8,7 +8,6 @@ from seed import seedProx
 
 HOST = 'localhost'  #'13.250.112.193'
 PORT = 8000
-CURRENT_PROCESS = "HOLD"
 ########################################################################
 #------------------------------PEER   DATA-----------------------------#
 MODELPARAMETERS  = "Mobile version"

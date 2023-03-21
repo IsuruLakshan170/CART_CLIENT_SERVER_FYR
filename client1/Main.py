@@ -13,7 +13,7 @@ import csv
 
 #cart initialisation remove files that have alredy having
 def initProject():
-    fh.removeFilesFromModelData()
+    fh.removeFilesFromBackup()
 
 
 #remove stored data in carData file
