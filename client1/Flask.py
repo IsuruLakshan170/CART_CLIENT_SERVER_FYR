@@ -8,6 +8,7 @@ import datetime
 import client 
 
 selectedItem ="Item 0"
+ItemListArray = [];
 
 app = Flask(__name__)
 
@@ -31,35 +32,48 @@ def start():
 
 @app.route('/getItems', methods =['POST',"GET"])
 def getItems():
+    global selectedItem
+    
+    
     current_date = datetime.date.today()
     results = QRScanner.QRReader()
-    global selectedItem
-    selectedItem = results
-    return render_template('home.html',selectItem=selectedItem,  currentDate=current_date)
+    selectedItem=results
+   
+   
+    # print(results)
+    return render_template('home.html',Item_Name=results['Item_Name'],Item_No=results['Item_No'],Item_Price=results['Item_Price'], currentDate=current_date)
 
 @app.route("/result", methods =['POST',"GET"])
 def result():
     global selectedItem
+    global ItemListArray
     current_date = datetime.date.today()
     output = request.form.to_dict()
     month = datetime.datetime.now().month
     item = 0
-    if selectedItem == "Item 1":
+    selectedItemItemNo =selectedItem['Item_No']
+    if selectedItemItemNo == "Item 1":
         item =1
-    elif selectedItem == "Item 2":
+    elif selectedItemItemNo == "Item 2":
         item =2
-    elif selectedItem == "Item 3":
+    elif selectedItemItemNo == "Item 3":
         item =3
-    elif selectedItem == "Item 4":
+    elif selectedItemItemNo == "Item 4":
         item =4
-    elif selectedItem == "Item 5":
+    elif selectedItemItemNo == "Item 5":
         item =5
-    elif selectedItem == "Item 6":
+    elif selectedItemItemNo == "Item 6":
         item =6
     gender = output["gender"]
+    itemCount = output["itemCount"]
+    selectedItem["Item_count"] = itemCount
+    selectedItem["Total_Price"] = 400
+     #update the globle array
+    ItemListArray.append(selectedItem)
+    print(selectedItem)
     wf.writetoCSV(month, item, gender)
     # im.datasetAnalize()
-    return render_template("home.html",currentDate=current_date)
+    return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date)
 
 def flask_thread():
     app.run()
@@ -67,4 +81,4 @@ def flask_thread():
 if __name__ == '__main__':
     t = Thread(target=app.run, kwargs={'port': 5001})
     t.start()
-    client.backgroudNetworkProcess()
+    # client.backgroudNetworkProcess()

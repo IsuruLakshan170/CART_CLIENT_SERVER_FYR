@@ -25,9 +25,7 @@ def encodeModelParameters():
     # compress the serialized weights
     compressed_model = zlib.compress(model_bytes)
 
-    # encode the compressed data as a base64 string
-    # my_string = base64.b64encode(compressed_model).decode('utf-8')
-
+  
     print("Size of encoded model parameter is (Byte Data type): {:.2f} MB".format(len(compressed_model) / (1024 * 1024)))
     print(type(compressed_model))
 
@@ -41,8 +39,6 @@ def decodeModelParameters(encoded_message):
     num_files = len([f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))])
     num_files =num_files+1
 
-    # decode the base64 string and decompress the data
-    # compressed_model = base64.b64decode(encoded_message.encode('utf-8'))
     model_bytes = zlib.decompress(encoded_message)
 
     # load the model parameters from the serialized data
