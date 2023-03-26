@@ -13,15 +13,18 @@ def QRReader():
         for i in decode(frame):
           
             decodeItem =i.data.decode('utf-8')
-            # print(decodeItem)
-          
+            print(decodeItem)
+            print(type(decodeItem))
+            #convert the string to list 
+            my_list = eval(decodeItem)
+            print(my_list[0])
             #load json object
-            json_object = json.loads(decodeItem)
+            # json_object = json.loads(decodeItem)
             # print(json_object['Item_Name'])  # Output: 'Food'
             # print(json_object['Item_No'])  # Output: 1
             # print(json_object['Item_Price'])  # Output: 100
             # print(json_object['Discount'])  # Output: 0.1
-            return json_object
+            return my_list
             
 
 
@@ -31,3 +34,7 @@ def QRReader():
 # # Print the result
 # print(first_item_name)
 # QRReader()
+
+# my_list = ["ItemName","ItemNo","ItemPrice","ItemCount","TotalPrice"]
+# first_item = my_list[0]
+# print(first_item)

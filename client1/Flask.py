@@ -11,6 +11,7 @@ selectedItem ="Item 0"
 ItemListArray = [];
 
 app = Flask(__name__)
+headings=("Name","Number","Price","Amount","Total price")
 
 @app.route('/')
 def load():
@@ -38,10 +39,10 @@ def getItems():
     current_date = datetime.date.today()
     results = QRScanner.QRReader()
     selectedItem=results
-   
+    data =ItemListArray
    
     # print(results)
-    return render_template('home.html',Item_Name=results['Item_Name'],Item_No=results['Item_No'],Item_Price=results['Item_Price'], currentDate=current_date)
+    return render_template('home.html',Item_Name=results[0],Item_No=results[1],Item_Price=results[2], currentDate=current_date,headings=headings,data=data)
 
 @app.route("/result", methods =['POST',"GET"])
 def result():
@@ -51,7 +52,7 @@ def result():
     output = request.form.to_dict()
     month = datetime.datetime.now().month
     item = 0
-    selectedItemItemNo =selectedItem['Item_No']
+    selectedItemItemNo =selectedItem[1]
     if selectedItemItemNo == "Item 1":
         item =1
     elif selectedItemItemNo == "Item 2":
@@ -66,14 +67,16 @@ def result():
         item =6
     gender = output["gender"]
     itemCount = output["itemCount"]
-    selectedItem["Item_count"] = itemCount
-    selectedItem["Total_Price"] = 400
+    selectedItem[3] = itemCount
+    selectedItem[4] = 400
      #update the globle array
     ItemListArray.append(selectedItem)
     print(selectedItem)
+    print(ItemListArray)
+    data =ItemListArray
     wf.writetoCSV(month, item, gender)
     # im.datasetAnalize()
-    return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date)
+    return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date,headings=headings,data=data)
 
 def flask_thread():
     app.run()
