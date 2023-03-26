@@ -10,7 +10,7 @@ import client
 selectedItem ="Item 0"
 ItemListArray = [];
 totalBill = 0
-
+threandingArra=[["https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg"],["https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg"],["https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg"]]
 app = Flask(__name__)
 headings=("Name","Number","Price","Amount","Total price")
 
@@ -81,6 +81,16 @@ def result():
     wf.writetoCSV(month, item, gender)
     # im.datasetAnalize()
     return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date,headings=headings,data=data,totalBill=totalBill)
+
+
+@app.route("/checkout", methods =['POST',"GET"])
+def checkout():
+    global ItemListArray
+    global totalBill
+    totalBill = 0
+    ItemListArray =[]
+    data=ItemListArray
+    return render_template("home.html",headings=headings,data=data,totalBill=totalBill)
 
 def flask_thread():
     app.run()

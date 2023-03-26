@@ -204,7 +204,7 @@
                                
                                  <div class="row justify-content-center">
                                    <div class="col-auto">
-                                     <input class="btn btn-primary" type="submit" value="save" />
+                                     <input class="btn btn-primary" type="submit" value="Add" />
                                    </div>
                                  </div>
                                </form>
@@ -264,7 +264,13 @@
                   <h4>Total Bill {{totalBill}}</h4>
                 </div>
 
-                  
+                <div class="row justify-content-center">
+                  <div class="col-12 col-md-6">
+                    <form action="/checkout" method="POST">
+                      <button type="submit" class="btn btn-primary btn-block">Checkout</button>
+                    </form>
+                  </div>
+                </div>
       </div>
       <!-- Block ui -->
     </div>
