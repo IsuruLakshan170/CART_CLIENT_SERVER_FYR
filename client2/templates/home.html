@@ -87,26 +87,23 @@
                 </div>
                 <div class="card-body">
                   <div class="image-gallery mx-auto">
+                 
+                   
+                    {% for threand in threandingArray %}
+                    {% for item in threand %}
                     <div class="row">
                       <div class="col">
-                        <img src="https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg" alt="Image 1" style="width: 200px; height: 300px;">
+                        <p></p>
+                        <img src={{item}} alt="Image 1" style="width: 200px; height: 300px;">
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <img src="https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg" alt="Image 1" style="width: 200px; height: 300px;">
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <img src="https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg" alt="Image 1" style="width: 200px; height: 300px;">
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <img src="https://i0.wp.com/priyadi.lk/wp-content/uploads/2022/06/easy_day_porridge-1.png?fit=230%2C356&ssl=1" alt="Image 1" style="width: 200px; height: 300px;">
-                      </div>
-                    </div>
+                     </div>
+
+                  {% endfor %}
+                  {% endfor %}
+                   
+
+
+                  
                   </div>
                 </div>
                 
@@ -204,7 +201,7 @@
                                
                                  <div class="row justify-content-center">
                                    <div class="col-auto">
-                                     <input class="btn btn-primary" type="submit" value="save" />
+                                     <input class="btn btn-primary" type="submit" value="Add" />
                                    </div>
                                  </div>
                                </form>
@@ -264,7 +261,13 @@
                   <h4>Total Bill {{totalBill}}</h4>
                 </div>
 
-                  
+                <div class="row justify-content-center">
+                  <div class="col-12 col-md-6">
+                    <form action="/checkout" method="POST">
+                      <button type="submit" class="btn btn-primary btn-block">Checkout</button>
+                    </form>
+                  </div>
+                </div>
       </div>
       <!-- Block ui -->
     </div>

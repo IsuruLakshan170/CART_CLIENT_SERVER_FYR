@@ -10,13 +10,29 @@ import client
 selectedItem ="Item 0"
 ItemListArray = [];
 totalBill = 0
-
+threandingArray=[["https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg" , "https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg" , "https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg" , "https://i0.wp.com/priyadi.lk/wp-content/uploads/2022/06/easy_day_porridge-1.png?fit=230%2C356&ssl=1"],
+                 ["https://cdn.takas.lk/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/0/2/02_1.png" , "https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg" , "https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg" , "https://i0.wp.com/priyadi.lk/wp-content/uploads/2022/06/easy_day_porridge-1.png?fit=230%2C356&ssl=1"],
+                 ["https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg" , "https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg" , "https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg" , "https://i0.wp.com/priyadi.lk/wp-content/uploads/2022/06/easy_day_porridge-1.png?fit=230%2C356&ssl=1"],
+                 ["https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg" , "https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg" , "https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg" , "https://i0.wp.com/priyadi.lk/wp-content/uploads/2022/06/easy_day_porridge-1.png?fit=230%2C356&ssl=1"],
+                 ["https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg" , "https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg" , "https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg" , "https://i0.wp.com/priyadi.lk/wp-content/uploads/2022/06/easy_day_porridge-1.png?fit=230%2C356&ssl=1"],
+                 ["https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg" , "https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg" , "https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg" , "https://i0.wp.com/priyadi.lk/wp-content/uploads/2022/06/easy_day_porridge-1.png?fit=230%2C356&ssl=1"]
+                 ]
+currentThreandArray=[]
 app = Flask(__name__)
 headings=("Name","Number","Price","Amount","Total price")
 
+#find current threand
+def findCurrentThreandArray():
+    global currentThreandArray
+   
+    global threandingArray
+    currentThreandArray.append(threandingArray[1])
+
+    
 @app.route('/')
 def load():
-    return render_template('home.html')
+    findCurrentThreandArray()
+    return render_template('home.html',threandingArray=currentThreandArray)
 
 
 @app.route('/moveHome', methods =['POST',"GET"])
@@ -81,6 +97,16 @@ def result():
     wf.writetoCSV(month, item, gender)
     # im.datasetAnalize()
     return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date,headings=headings,data=data,totalBill=totalBill)
+
+
+@app.route("/checkout", methods =['POST',"GET"])
+def checkout():
+    global ItemListArray
+    global totalBill
+    totalBill = 0
+    ItemListArray =[]
+    data=ItemListArray
+    return render_template("home.html",headings=headings,data=data,totalBill=totalBill)
 
 def flask_thread():
     app.run()
