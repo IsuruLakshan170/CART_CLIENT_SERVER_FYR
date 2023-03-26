@@ -8,6 +8,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
     />
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    
     <title>Bootstrap Full Screen UI Example</title>
     <style>
       /* custom style for background color */
@@ -32,11 +36,14 @@
         justify-content: center;
         align-items: center;
       }
+      .image-gallery img {
+        margin: 10px;
+      }
     </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-      <a class="navbar-brand" href="#">Supermarket</a>
+      <a class="navbar-brand" href="#">Supermarket </a>
       <button
         class="navbar-toggler"
         type="button"
@@ -68,92 +75,217 @@
       </div>
     </nav>
 
-  <!-- Block ui -->
-  <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="bg-light p-3" style="width: 400px; height: 600px;">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title text-center">Cart</h3>
-              </div>
-              <div class="card-body">
-               
 
-                <div class="container">
-           
+
+    <div>  
+      <div class="container-fluid pt-5">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title text-center">Today Thrending</h3>
+                </div>
+                <div class="card-body">
+                  <div class="image-gallery mx-auto">
+                    <div class="row">
+                      <div class="col">
+                        <img src="https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg" alt="Image 1" style="width: 200px; height: 300px;">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <img src="https://5.imimg.com/data5/ANDROID/Default/2020/10/YU/QD/UL/35343054/prod-20201011-0159397534769397062872599-jpg-500x500.jpg" alt="Image 1" style="width: 200px; height: 300px;">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <img src="https://food.fnr.sndimg.com/content/dam/images/food/products/2020/1/7/rx_vegetable-goldfish-sweet-carrot.jpg.rend.hgtvcom.616.616.suffix/1578432241151.jpeg" alt="Image 1" style="width: 200px; height: 300px;">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <img src="https://i0.wp.com/priyadi.lk/wp-content/uploads/2022/06/easy_day_porridge-1.png?fit=230%2C356&ssl=1" alt="Image 1" style="width: 200px; height: 300px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+
+             <div class="col-lg-4">
+              <div class="container d-flex " >
+                <div class="bg-light p-3" style="width: 400px; height: 600px;">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col">
+                        <div class="card">
+                          <div class="card-header">
+                            <h3 class="card-title text-center">Cart </h3>
+                          </div>
+                          <div class="card-body">
+                           
             
-                  <!-- 2-->
-                  <div class="row justify-content-center">
-                    <div class="col-12 col-md-6">
-                      <form action="/getItems" method="POST">
-                        <button type="submit" class="btn btn-dark btn-block">Scan</button>
-                      </form>
+                            <div class="container">
+                       
+                        
+                              <!-- 2-->
+                              <div class="row justify-content-center">
+                                <div class="col-12 col-md-6">
+                                  <form action="/getItems" method="POST">
+                                    <button type="submit" class="btn btn-dark btn-block">Scan</button>
+                                  </form>
+                                </div>
+                              </div>
+                              
+                              <!-- 3-->
+                             <div class="row ">
+                                  <!-- Form Section -->
+                               <form class="grid" action="/result" method="POST">
+                                 <div class="row">
+                                   <!-- Month Field -->
+                                   <div class="col-sm">
+                                     <label for="month">Date </label>
+                                   </div>
+                                   <div class="col-sm">{{currentDate}}</div>
+                                 </div>
+                   
+                                 <div class="row">
+                                   <!--  Item_Name Field -->
+                                   <div class="col-sm">
+                                     <label for="itemName">Item Name</label>
+                                   </div>
+                                   <div id="item_Name" type="text"  id="item_Name"  value="" class="col-sm">{{Item_Name}}</div>
+                                 </div>
+            
+                                 <div class="row">
+                                  <!--  Item_Price Field -->
+                                  <div class="col-sm">
+                                    <label for="itemPrice">Item Price</label>
+                                  </div>
+                                  <div class="col-sm">{{Item_Price}}
+                                  </div>
+                                </div>
+            
+                                <div class="row">
+                                  <!--  Item_No Field -->
+                                  <div class="col-sm">
+                                    <label for="itemNo">Item No</label>
+                                  </div>
+                                  <div class="col-sm">{{Item_No}}
+                                  </div>
+                                </div>
+                                <!-- Item Count Field -->
+                                <div class="row">
+                                <div class="col-sm">
+                                  <label for="itemCount">Item Count</label>
+                                </div>
+                              <div>
+                                <input type="text" size="5" id="itemCount" name="itemCount" value="">
+                              </div>
+                            </div>
+            
+                                 <div class="row">
+                                   <!-- Gender Field -->
+                                   <div class="col-sm">
+                                     <label for="gender">Gender</label>
+                                   </div>
+                                   <div class="col-sm">
+                                     <select name="gender" id="gender">
+                                       <option value="0">Male</option>
+                                       <option value="1">Female</option>
+                                     </select>
+                                   </div>
+                                 </div>
+                   
+                                 <!-- Save Button -->
+                                 
+
+                               
+                                 <div class="row justify-content-center">
+                                   <div class="col-auto">
+                                     <input class="btn btn-primary" type="submit" value="save" />
+                                   </div>
+                                 </div>
+                               </form>
+                   
+                             </div>
+                           </div>
+            
+            
+            
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
-                  <!-- 3-->
-                 <div class="row ">
-                      <!-- Form Section -->
-                   <form class="grid" action="/result" method="POST">
-                     <div class="row">
-                       <!-- Month Field -->
-                       <div class="col-sm">
-                         <label for="month">Month </label>
-                       </div>
-                       <div class="col-sm">{{currentDate}}</div>
-                     </div>
-       
-                     <div class="row">
-                       <!-- Item Number Field -->
-                       <div class="col-sm">
-                         <label for="itemNo">Item NO</label>
-                       </div>
-                       <div class="col-sm">{{selectItem}}</div>
-                     </div>
-       
-                     <div class="row">
-                       <!-- Gender Field -->
-                       <div class="col-sm">
-                         <label for="gender">Gender</label>
-                       </div>
-                       <div class="col-sm">
-                         <select name="gender" id="gender">
-                           <option value="0">Male</option>
-                           <option value="1">Female</option>
-                         </select>
-                       </div>
-                     </div>
-       
-                     <!-- Save Button -->
-                     <div class="row">
-                       <div class="col-auto">
-                         <input class="btn btn-primary" type="submit" value="save" />
-                       </div>
-                     </div>
-                   </form>
-       
-                 </div>
-               </div>
-
-
-
+                </div>
               </div>
+              
             </div>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-  
 
+
+
+            
+
+         <div class="col-lg-5">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title text-center">Bill</h3>
+                </div>
+                <div class="card-body">
+                 
+                    
+
+                  <table class="table">
+                    <thead class="thead-light">
+
+                    <tr>
+                      {% for header in headings %}
+                      <th> {{header}} </th>
+                      {% endfor %}
+                      <tr>
+                      </thead>
+                      <tbody>
+
+                  {% for row in data %}
+                    <tr>
+                      {% for cell in row %}
+                      <td> {{cell}} </td>
+                      {% endfor %}
+                      <tr>	
+                  {% endfor %}
+                </tbody>
+
+                  </table>
+
+                 <div class="row d-flex justify-content-center">
+                  <h4>Total Bill {{totalBill}}</h4>
+                </div>
+
+                  
+      </div>
+      <!-- Block ui -->
+    </div>
+    
 
 
     <!-- Bootstrap JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        var currentIndex = 0;
+        var galleryLength = $('.image-gallery img').length;
+        var intervalId = setInterval(function() {
+          currentIndex = (currentIndex + 1) % galleryLength;
+          $('.image-gallery img').hide();
+          $('.image-gallery img').eq(currentIndex).fadeIn(2000);
+        }, 4000);
+      });
+    </script>
   </body>
 </html>

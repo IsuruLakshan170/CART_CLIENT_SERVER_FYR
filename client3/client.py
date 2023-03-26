@@ -62,7 +62,7 @@ def connectNetwork(type):
             mainFunn("SHELL",50)
             time.sleep(2)
             print("loop call triggered")
-  
+
     elif type == "KERNEL":
             mainFunn("KERNEL",15)
             time.sleep(2)

@@ -8,8 +8,11 @@ import datetime
 import client 
 
 selectedItem ="Item 0"
+ItemListArray = [];
+totalBill = 0
 
 app = Flask(__name__)
+headings=("Name","Number","Price","Amount","Total price")
 
 @app.route('/')
 def load():
@@ -31,35 +34,53 @@ def start():
 
 @app.route('/getItems', methods =['POST',"GET"])
 def getItems():
+    global selectedItem
+    global totalBill
+    
     current_date = datetime.date.today()
     results = QRScanner.QRReader()
-    global selectedItem
-    selectedItem = results
-    return render_template('home.html',selectItem=selectedItem,  currentDate=current_date)
+    selectedItem=results
+    data =ItemListArray
+   
+    # print(results)
+    return render_template('home.html',Item_Name=results[0],Item_No=results[1],Item_Price=results[2], currentDate=current_date,headings=headings,data=data,totalBill=totalBill)
 
 @app.route("/result", methods =['POST',"GET"])
 def result():
     global selectedItem
+    global ItemListArray
+    global totalBill
     current_date = datetime.date.today()
     output = request.form.to_dict()
     month = datetime.datetime.now().month
     item = 0
-    if selectedItem == "Item 1":
+    selectedItemItemNo =selectedItem[1]
+    if selectedItemItemNo == "Item 1":
         item =1
-    elif selectedItem == "Item 2":
+    elif selectedItemItemNo == "Item 2":
         item =2
-    elif selectedItem == "Item 3":
+    elif selectedItemItemNo == "Item 3":
         item =3
-    elif selectedItem == "Item 4":
+    elif selectedItemItemNo == "Item 4":
         item =4
-    elif selectedItem == "Item 5":
+    elif selectedItemItemNo == "Item 5":
         item =5
-    elif selectedItem == "Item 6":
+    elif selectedItemItemNo == "Item 6":
         item =6
     gender = output["gender"]
+    itemCount = output["itemCount"]
+    selectedItem[3] = itemCount
+    itemPrice=selectedItem[2]
+    selectedItem[4] =int(itemPrice)*int(itemCount)
+    totalBill=int(totalBill)+int(selectedItem[4])
+     #update the globle array
+    ItemListArray.append(selectedItem)
+    print(selectedItem)
+    print(ItemListArray)
+    data =ItemListArray
     wf.writetoCSV(month, item, gender)
     # im.datasetAnalize()
-    return render_template("home.html",currentDate=current_date)
+    return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date,headings=headings,data=data,totalBill=totalBill)
 
 def flask_thread():
     app.run()
@@ -67,4 +88,4 @@ def flask_thread():
 if __name__ == '__main__':
     t = Thread(target=app.run, kwargs={'port': 5003})
     t.start()
-    client.backgroudNetworkProcess()
+    # client.backgroudNetworkProcess()
