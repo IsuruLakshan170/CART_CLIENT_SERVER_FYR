@@ -9,6 +9,7 @@ import client
 
 selectedItem ="Item 0"
 ItemListArray = [];
+totalBill = 0
 
 app = Flask(__name__)
 headings=("Name","Number","Price","Amount","Total price")
@@ -34,7 +35,7 @@ def start():
 @app.route('/getItems', methods =['POST',"GET"])
 def getItems():
     global selectedItem
-    
+    global totalBill
     
     current_date = datetime.date.today()
     results = QRScanner.QRReader()
@@ -42,12 +43,13 @@ def getItems():
     data =ItemListArray
    
     # print(results)
-    return render_template('home.html',Item_Name=results[0],Item_No=results[1],Item_Price=results[2], currentDate=current_date,headings=headings,data=data)
+    return render_template('home.html',Item_Name=results[0],Item_No=results[1],Item_Price=results[2], currentDate=current_date,headings=headings,data=data,totalBill=totalBill)
 
 @app.route("/result", methods =['POST',"GET"])
 def result():
     global selectedItem
     global ItemListArray
+    global totalBill
     current_date = datetime.date.today()
     output = request.form.to_dict()
     month = datetime.datetime.now().month
@@ -68,7 +70,9 @@ def result():
     gender = output["gender"]
     itemCount = output["itemCount"]
     selectedItem[3] = itemCount
-    selectedItem[4] = 400
+    itemPrice=selectedItem[2]
+    selectedItem[4] =int(itemPrice)*int(itemCount)
+    totalBill=int(totalBill)+int(selectedItem[4])
      #update the globle array
     ItemListArray.append(selectedItem)
     print(selectedItem)
@@ -76,7 +80,7 @@ def result():
     data =ItemListArray
     wf.writetoCSV(month, item, gender)
     # im.datasetAnalize()
-    return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date,headings=headings,data=data)
+    return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date,headings=headings,data=data,totalBill=totalBill)
 
 def flask_thread():
     app.run()
