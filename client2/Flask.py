@@ -11,6 +11,7 @@ import modelAccuracy as getThreand
 selectedItem ="Item 0"
 ItemListArray = [];
 totalBill = 0
+currentGender = 0
 threandingArray=[["https://aldprdproductimages.azureedge.net/media/resized/$Aldi_GB/19.05.22/4088600260457_0_XL.jpg" , "https://www.bigbasket.com/media/uploads/p/xxl/20004325_10-uncle-chips-uncle-chips-potato-chips-plain-salted-flavour.jpg" , 
                   "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/813xqlCcX6S._SL1500_.jpg" ,
                   "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/813axPlVxBL.jpg"],
@@ -27,14 +28,15 @@ headings=("Name","Number","Price","Amount","Total price")
 #find current threand
 def findCurrentThreandArray():
     global currentThreandArray
-   
+    global currentGender
     global threandingArray
     #get current threand
     month = datetime.datetime.now().month
-    gender = 0
+    gender = currentGender
     itemNum =  getThreand.getCurrentThreand(month,gender)
     print(month,gender)
     print(itemNum)
+    currentThreandArray = []
     currentThreandArray.append(threandingArray[itemNum])
 
     
@@ -46,7 +48,7 @@ def load():
 
 @app.route('/moveHome', methods =['POST',"GET"])
 def moveHome():
-    return render_template('home.html')
+    return render_template('home.html',threandingArray=currentThreandArray)
 
 @app.route('/moveAdmin', methods =['POST',"GET"])
 def moveAdmin():
@@ -68,13 +70,14 @@ def getItems():
     data =ItemListArray
    
     # print(results)
-    return render_template('home.html',Item_Name=results[0],Item_No=results[1],Item_Price=results[2], currentDate=current_date,headings=headings,data=data,totalBill=totalBill)
+    return render_template('home.html',Item_Name=results[0],Item_No=results[1],Item_Price=results[2], currentDate=current_date,headings=headings,data=data,totalBill=totalBill,threandingArray=currentThreandArray)
 
 @app.route("/result", methods =['POST',"GET"])
 def result():
     global selectedItem
     global ItemListArray
     global totalBill
+    global currentGender
     current_date = datetime.date.today()
     output = request.form.to_dict()
     month = datetime.datetime.now().month
@@ -93,6 +96,7 @@ def result():
     elif selectedItemItemNo == "Item 6":
         item =6
     gender = output["gender"]
+    currentGender = gender
     itemCount = output["itemCount"]
     selectedItem[3] = itemCount
     itemPrice=selectedItem[2]
@@ -104,8 +108,8 @@ def result():
     print(ItemListArray)
     data =ItemListArray
     wf.writetoCSV(month, item, gender)
-    # im.datasetAnalize()
-    return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date,headings=headings,data=data,totalBill=totalBill)
+    findCurrentThreandArray()
+    return render_template("home.html" ,cartData=ItemListArray,currentDate=current_date,headings=headings,data=data,totalBill=totalBill,threandingArray=currentThreandArray)
 
 
 @app.route("/checkout", methods =['POST',"GET"])
@@ -115,7 +119,7 @@ def checkout():
     totalBill = 0
     ItemListArray =[]
     data=ItemListArray
-    return render_template("home.html",headings=headings,data=data,totalBill=totalBill)
+    return render_template("home.html",headings=headings,data=data,totalBill=totalBill,threandingArray=currentThreandArray)
 
 def flask_thread():
     app.run()
