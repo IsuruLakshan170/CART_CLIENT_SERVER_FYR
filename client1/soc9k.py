@@ -6,7 +6,7 @@ import sys
 from filesender import partDevider
 from enumList import conctionType
 from errorList import errMsg
-
+from util import requestModel
 
 class peerCom:
     def __init__(self, host, port, timerout, Mtype, SYNC_CONST):
@@ -21,17 +21,21 @@ class peerCom:
         self.RECIVEQUE = []
         self.socketFree = True
         self.sync_const = 1
+        self.closeWait = True
+        self.USERID = ""
 
     def connect(self):
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.connect((self.host, self.port))
             data = self.socket.recv(1024)
-            USERID = repr(data.decode('utf-8'))[1:-1]
-            return USERID
+            self.USERID = repr(data.decode('utf-8'))[1:-1]
+            return self.USERID
         except:
             print(errMsg.MSG002.value)
-            self.close(0)
+            self.closeWait = False
+            self.close(0,self.USERID)
+            sys.exit(0)
 
     def start_receiver(self):
         self.is_running = True
@@ -40,7 +44,9 @@ class peerCom:
             self.receiver_thread.start()
         except:
             print(errMsg.MSG003.value)
-            self.close(0)
+            self.closeWait = False
+            self.close(0,self.USERID)
+            sys.exit(0)
 
     def receiver(self):
         continueData = False
@@ -69,7 +75,10 @@ class peerCom:
                 print(errMsg.MSG008.value,decordedData.get("Sender"))
                 if decordedData.get("Data")[0] == "ERROR":
                     print(decordedData.get("Data")[1])
-                    self.close(0)
+                    self.closeWait = False
+                    self.close(0,self.USERID)
+                elif decordedData.get("Data")[0] == "EXITDONE":
+                    self.closeWait = False
                 self.RECIVEQUE.append(decordedData)
             except:
                 continue
@@ -81,7 +90,9 @@ class peerCom:
             self.sender_thread.start()
         except:
             print(errMsg.MSG003.value)
-            self.close(0)
+            self.closeWait = False
+            self.close(0,self.USERID)
+            sys.exit(0)
 
     def sender(self):
         try:
@@ -103,7 +114,9 @@ class peerCom:
                     time.sleep(2)
         except:
             print(errMsg.MSG003.value)
-            self.close(0)
+            self.closeWait = False
+            self.close(0,self.USERID)
+            sys.exit(0)
 
     def request(self, data):
         self.SENDQUE.append(data)
@@ -111,7 +124,11 @@ class peerCom:
     def queueClean(self,data):
         self.RECIVEQUE.remove(data)
 
-    def close(self,TIMEOUT):
+    def close(self,TIMEOUT,USERID):
+        while len(self.SENDQUE) != 0 & len(self.RECIVEQUE) != 0:
+            time.sleep(3)
+        modelReq = ["EXIT"]
+        self.request(requestModel(USERID,modelReq))
         if self.mode == conctionType.KERNEL.value:
             while len(self.SENDQUE) != 0 & len(self.RECIVEQUE) != 0:
                 time.sleep(2)
@@ -123,6 +140,13 @@ class peerCom:
             self.closeNow()
 
     def closeNow(self):
+        while True:
+            if self.closeWait:
+                time.sleep(2)
+            else:
+                break
         self.is_running = False
         print(errMsg.MSG001.value)
         self.socket.close()
+
+
