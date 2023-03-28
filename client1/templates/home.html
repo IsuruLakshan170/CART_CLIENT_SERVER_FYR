@@ -36,9 +36,16 @@
         justify-content: center;
         align-items: center;
       }
+ 
       .image-gallery img {
+        display: none;
         margin: 10px;
       }
+      
+      .image-gallery img:first-child {
+        display: block;
+      }
+      
     </style>
   </head>
   <body>
@@ -88,7 +95,6 @@
                 <div class="card-body">
                   <div class="image-gallery mx-auto">
                  
-                   
                     {% for threand in threandingArray %}
                     {% for item in threand %}
                     <div class="row">
@@ -101,8 +107,6 @@
                   {% endfor %}
                   {% endfor %}
                    
-
-
                   
                   </div>
                 </div>
@@ -222,10 +226,6 @@
               
             </div>
 
-
-
-            
-
          <div class="col-lg-5">
               <div class="card">
                 <div class="card-header">
@@ -286,8 +286,8 @@
         var intervalId = setInterval(function() {
           currentIndex = (currentIndex + 1) % galleryLength;
           $('.image-gallery img').hide();
-          $('.image-gallery img').eq(currentIndex).fadeIn(2000);
-        }, 4000);
+          $('.image-gallery img').eq(currentIndex).fadeIn(1000);
+        }, 2000);
       });
     </script>
   </body>
