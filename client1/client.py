@@ -152,7 +152,7 @@ def sigint_handler(signal, frame, mySocket, USERID):
     mySocket.close(0,USERID)
     sys.exit(0)
 
-def mainFunn(MODE, TIMEOUT = 12, RECIVER_TIMEOUT = 5*60, SYNC_CONST = 1):
+def mainFunn(MODE,RECIVER_TIMEOUT, TIMEOUT = 12, SYNC_CONST = 1):
     try:
         mySocket = peerCom(HOST, PORT, TIMEOUT , MODE, SYNC_CONST)
         signal.signal(signal.SIGINT, lambda signal, frame: sigint_handler(signal, frame, mySocket, USERID))
@@ -196,7 +196,7 @@ def connectNetwork(type):
             print("loop call triggered")
 
     elif type == "KERNEL":
-            mainFunn("KERNEL",15)
+            mainFunn("KERNEL",30)
             time.sleep(2)
             print("loop call triggered")
 
