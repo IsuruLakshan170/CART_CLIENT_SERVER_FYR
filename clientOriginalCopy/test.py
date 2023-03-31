@@ -1,4 +1,0 @@
-import client
-
-print("test")
-
