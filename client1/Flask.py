@@ -37,7 +37,6 @@ def findCurrentThreandArray():
     currentThreandArray.append(receivedList)
     print("length : ",len(currentThreandArray[0]))
     print(currentThreandArray)
-
     
 @app.route('/')
 def load():
@@ -55,7 +54,7 @@ def moveAdmin():
 
 @app.route("/start", methods =['POST',"GET"])
 def start():
-    im.initProject()
+    im.resetProject()
     return render_template("admin.html")
 
 @app.route('/getItems', methods =['POST',"GET"])

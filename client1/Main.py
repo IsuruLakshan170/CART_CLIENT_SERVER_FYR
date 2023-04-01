@@ -12,8 +12,8 @@ import fileHandle as fh
 import csv
 
 #cart initialisation remove files that have alredy having
-def initProject():
-    fh.removeFilesFromBackup()
+def resetProject():
+    fh.resetModelData()
 
 
 #remove stored data in carData file

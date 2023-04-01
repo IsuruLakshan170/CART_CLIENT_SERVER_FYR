@@ -1,4 +1,6 @@
 import os
+import modelGenerator as mg
+import saveModelData as sm
 
 #remove the file from the initModelParameters
 def removeFiles():
@@ -34,3 +36,8 @@ def removeFilesFromBackup():
      except FileNotFoundError:
         print("That file does not exist")
      print("All files are removed from backup")
+     
+     
+def resetModelData():
+    model =mg.create_model()
+    sm.saveModelData(model)
