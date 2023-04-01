@@ -14,9 +14,9 @@ def getModelAccuracy(model,test_data1,test_labels1):
 
     # Calculate the accuracy of the model
     
-    accuracy_model_1 = accuracy_score(test_labels1, y_pred_model_1)
-    print("Model  Accuracy:", accuracy_model_1*100)
-    return accuracy_model_1
+    modelAccuracy = accuracy_score(test_labels1, y_pred_model_1)
+    print("Model  Accuracy:", modelAccuracy*100)
+    return modelAccuracy*100
   
 def predictionsResults(model,test_data1):
   #Predict model 1  test using test date
