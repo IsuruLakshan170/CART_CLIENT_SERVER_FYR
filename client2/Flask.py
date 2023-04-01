@@ -124,6 +124,6 @@ def flask_thread():
     app.run()
 
 if __name__ == '__main__':
-    t = Thread(target=app.run, kwargs={'port': 5002})
-    t.start()
+    # t = Thread(target=app.run, kwargs={'port': 5002})
+    # t.start()
     client.backgroudNetworkProcess()
