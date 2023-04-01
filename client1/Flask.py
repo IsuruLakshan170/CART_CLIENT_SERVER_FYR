@@ -8,6 +8,7 @@ import datetime
 import client 
 import modelAccuracy as getThreand
 import dbConnect 
+import cartConfiguration as config
 
 selectedItem ="Item 0"
 ItemListArray = [];
@@ -38,24 +39,16 @@ def findCurrentThreandArray():
     print("length : ",len(currentThreandArray[0]))
     print(currentThreandArray)
     
+#------------------------home---------------------------
 @app.route('/')
 def load():
     findCurrentThreandArray()
     return render_template('home.html',threandingArray=currentThreandArray)
 
-
 @app.route('/moveHome', methods =['POST',"GET"])
 def moveHome():
     return render_template('home.html',threandingArray=currentThreandArray)
 
-@app.route('/moveAdmin', methods =['POST',"GET"])
-def moveAdmin():
-    return render_template('admin.html')
-
-@app.route("/start", methods =['POST',"GET"])
-def start():
-    im.resetProject()
-    return render_template("admin.html")
 
 @app.route('/getItems', methods =['POST',"GET"])
 def getItems():
@@ -119,10 +112,42 @@ def checkout():
     data=ItemListArray
     return render_template("home.html",headings=headings,data=data,totalBill=totalBill,threandingArray=currentThreandArray)
 
+#------admin-----------------------
+@app.route('/configureNetwork', methods =['POST',"GET"])
+def configureNetwork():
+    row = request.form.to_dict()
+    
+    HOST = row["HOST"]
+    LOCALHOST = row["LOCALHOST"]
+    PORT = row["PORT"]
+    RECEIVER_TIMEOUT = row["RECEIVER_TIMEOUT"]
+    SYNC_CONST = row["SYNC_CONST"]
+
+    config.netConfigurations(HOST,LOCALHOST,PORT,RECEIVER_TIMEOUT,SYNC_CONST)
+    return render_template('admin.html',HOST=HOST,LOCALHOST=LOCALHOST,PORT=PORT,RECEIVER_TIMEOUT=RECEIVER_TIMEOUT,SYNC_CONST=SYNC_CONST)
+
+@app.route("/start", methods =['POST',"GET"])
+def start():
+    im.resetProject()
+    return render_template("admin.html")
+
+@app.route('/moveAdmin', methods =['POST',"GET"])
+def moveAdmin():
+    row = config.getNetConfigurations()
+    HOST = row[0]
+    LOCALHOST = row[1]
+    PORT = row[2]
+    RECEIVER_TIMEOUT = row[3]
+    SYNC_CONST = row[4]
+
+    
+    return render_template('admin.html',HOST=HOST,LOCALHOST=LOCALHOST,PORT=PORT,RECEIVER_TIMEOUT=RECEIVER_TIMEOUT,SYNC_CONST=SYNC_CONST)
+
+#------------flask run----------------
 def flask_thread():
     app.run()
 
 if __name__ == '__main__':
     t = Thread(target=app.run, kwargs={'port': 5001})
     t.start()
-    client.backgroudNetworkProcess()
+    # client.backgroudNetworkProcess()
